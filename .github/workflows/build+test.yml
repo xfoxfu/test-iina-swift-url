@@ -19,12 +19,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        xcode: ["14", "13"]
+        xcode: ["15", "14", "13"]
         macos: ["macos-14", "macos-13", "macos-12", "macos-11"]
         scheme: ["URLLib"]
         command: ["test"]
         platform: ["macOS"]
         exclude:
+          - { macos: "macos-11", xcode: "15" }
           - { macos: "macos-11", xcode: "14" }
           - { macos: "macos-14", xcode: "13" }
           - { macos: "macos-13", xcode: "13" }
