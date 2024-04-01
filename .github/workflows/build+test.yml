@@ -25,6 +25,7 @@ jobs:
         command: ["test"]
         platform: ["macOS"]
         exclude:
+          - { macos: "macos-12", xcode: "15" }
           - { macos: "macos-11", xcode: "15" }
           - { macos: "macos-11", xcode: "14" }
           - { macos: "macos-14", xcode: "13" }
