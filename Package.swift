@@ -4,21 +4,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "Earendil",
+    name: "URLLib",
     products: [
-        .library(name: "Earendil",
+        .library(name: "URLLib",
                  type: .static,
-                 targets: ["Earendil"]
+                 targets: ["URLLib"]
         )
     ],
     dependencies: [],
     targets: [
-        .target(name: "Earendil",
+        .target(name: "URLLib",
                 dependencies: [],
-                resources: [.process("Resources")]
+                resources: []
         ),
-        .testTarget(name: "EarendilTests",
-                    dependencies: ["Earendil"]
+        .testTarget(name: "URLLibTests",
+                    dependencies: ["URLLib"]
         )
     ]
 )

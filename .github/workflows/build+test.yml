@@ -2,12 +2,10 @@ name: Test all  platforms
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: 0 0 * * *
 
 # https://stackoverflow.com/a/72408109/6942800
 concurrency:
@@ -17,42 +15,40 @@ concurrency:
 jobs:
   build_and_test:
     name: ${{ matrix.command }} on  ${{ matrix.platform }} (xcode ${{ matrix.xcode }}, ${{ matrix.macos }})
-    runs-on: ${{ matrix.macos }} 
+    runs-on: ${{ matrix.macos }}
     strategy:
       fail-fast: false
       matrix:
-        xcode: ['14.2', '14.0.1']
-        macos: ['macos-12', 'macos-11']
-        scheme: ['Earendil']
-        command: ['test']
-        platform: ['macOS', 'iOS', 'tvOS', 'watchOS', 'mac-catalyst']
+        xcode: ["14", "13"]
+        macos: ["macos-14", "macos-13", "macos-12", "macos-11"]
+        scheme: ["URLLib"]
+        command: ["test"]
+        platform: ["macOS"]
         exclude:
-          - macos: 'macos-11'
-            xcode: '14.2'
-          - macos: 'macos-11'
-            xcode: '14.0.1'
+          - macos: "macos-11"
+            xcode: "14"
     steps:
-    - name: Switch xcode to ${{ matrix.xcode }}
-      uses: maxim-lobanov/setup-xcode@v1.2.3
-      with:
-        xcode-version: ${{ matrix.xcode }}
-    - name: Double-check macOS version (${{ matrix.macos }})
-      run: sw_vers
-    - name: Code Checkout
-      uses: actions/checkout@v2
-    - name: Check xcodebuild version
-      run: xcodebuild -version
-    - name: Check xcode embedded SDKs
-      run: xcodebuild -showsdks
-    - name: Show buildable schemes
-      run: xcodebuild -list
-    - name: Show eligible build destinations for ${{ matrix.scheme }}
-      run: xcodebuild -showdestinations -scheme ${{ matrix.scheme }}
-    - uses: mxcl/xcodebuild@v1.9.2
-      with:
-        platform: ${{ matrix.platform }}
-        scheme: ${{ matrix.scheme }}
-        action: ${{ matrix.command }} 
-        code-coverage: true
-        verbosity: xcpretty
-        upload-logs: always
+      - name: Switch xcode to ${{ matrix.xcode }}
+        uses: maxim-lobanov/setup-xcode@v1.2.3
+        with:
+          xcode-version: ${{ matrix.xcode }}
+      - name: Double-check macOS version (${{ matrix.macos }})
+        run: sw_vers
+      - name: Code Checkout
+        uses: actions/checkout@v2
+      - name: Check xcodebuild version
+        run: xcodebuild -version
+      - name: Check xcode embedded SDKs
+        run: xcodebuild -showsdks
+      - name: Show buildable schemes
+        run: xcodebuild -list
+      - name: Show eligible build destinations for ${{ matrix.scheme }}
+        run: xcodebuild -showdestinations -scheme ${{ matrix.scheme }}
+      - uses: mxcl/xcodebuild@v1.9.2
+        with:
+          platform: ${{ matrix.platform }}
+          scheme: ${{ matrix.scheme }}
+          action: ${{ matrix.command }}
+          code-coverage: true
+          verbosity: xcpretty
+          upload-logs: always
