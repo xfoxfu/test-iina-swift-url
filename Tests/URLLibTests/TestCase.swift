@@ -4,6 +4,9 @@ import Foundation
 
 final class TestCase: XCTestCase {
     func testHavingContinentLocaleShouldNotReturnInferredLocation() {
-        XCTAssertEqual(parseUrl("https://example.com/[foo bar.mkv"), URL(string: "https://example.com/%5Bfoo%20bar.mkv", encodingInvalidCharacters:false))
+        XCTAssertEqual(
+            parseUrl(urlStr: "https://example.com/[foo bar.mkv")?.absoluteString,
+            "https://example.com/%5Bfoo%20bar.mkv"
+        )
     }
 }
